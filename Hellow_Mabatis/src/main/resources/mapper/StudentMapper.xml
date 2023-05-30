@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+ namespace：必须有值，自定义的唯一字符串
+ 推荐使用：dao 接口的全限定名称
+-->
+<mapper namespace="com.bjpowernode.mapper.StudentMapper">
+    <!--        id随意; type:实体类的全限定类名-->
+    <resultMap id="studentMap" type="Student">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="cid" property="cid"/>
+        <result column="isdeleted" property="isdeleted"/>
+        <association property="classRoom" javaType="ClassRoom">
+            <result column="cid" property="id"/>
+            <result column="classname" property="classname"/>
+        </association>
+    </resultMap>
+    <sql id="studentBase">
+        id,name,age,isdeleted
+    </sql>
+    <update id="deleteStudents">
+        update tb_student
+        <if test="list != null and list.size > 0">
+            set isdeleted = 1 where id in
+            <foreach collection="list" open="(" close=")" separator=","
+                     item="stuid">
+                #{stuid}
+            </foreach>
+        </if>
+    </update>
+
+    <update id="deleteStudentByArray">
+        update tb_student
+        <if test="array != null and array.length > 0">
+            set isdeleted = 1 where id in
+            <foreach collection="array" open="(" close=")" separator=","
+                     item="stuid">
+                #{stuid}
+            </foreach>
+        </if>
+    </update>
+    <!--简单类型-->
+    <select id="findStuByIds" resultType="Student">
+        select * from tb_student
+        <where>
+            <if test="list != null and list.size>0">
+                id in
+                <foreach collection="list" item="stuid" open="(" close=")" separator=",">
+                    #{stuid}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <!--    对象类型-->
+    <select id="findStuByStus" resultType="Student">
+        select * from tb_student
+        <where>
+            <if test="list != null and list.size>0">
+                id in
+                <foreach collection="list" item="student" open="(" close=")" separator=",">
+                    #{student.id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <!--模糊查询-->
+    <select id="findStuByName" resultType="Student">
+        select *
+        from tb_student
+        where name like "%" #{name} "%"
+    </select>
+    <!--  多条件组合查询加分页  -->
+    <select id="findStuPage" parameterType="StudentVo" resultType="Student">
+        select
+        <include refid="studentBase"/>
+        from tb_student
+        <where>
+            isdeleted =0
+
+            <if test="name != null and name !='' ">
+                and name like "%" #{name} "%"
+            </if>
+            <if test="(minAge != null and minAge != '') and (maxAge != null and maxAge != '')">
+                and age between #{minAge} and #{maxAge}
+            </if>
+            <if test="(minAge != null and minAge != '') and (maxAge == null or maxAge == '')">
+                and age &gt;=#{minAge}
+            </if>
+            <if test="(minAge == null or minAge == '') and (maxAge != null and maxAge != '')">
+                and age &lt;=#{maxAge}
+            </if>
+
+            <if test="(start != null and start >= 0) and (pageSize != null and pageSize > 0)">
+                limit #{start},#{pageSize}
+            </if>
+        </where>
+    </select>
+
+    <!--一对一-->
+    <select id="findStuClassRoom" resultMap="studentMap" resultType="Student">
+        select s.*,c.classname from tb_student s join tb_classroom c on s.cid = c.id where s.id = #{id}
+    </select>
+
+
+</mapper>

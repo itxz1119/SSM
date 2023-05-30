@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bjpowernode.mapper.UserMapper">
+    <resultMap id="userMap" type="User">
+        <id column="id" property="id"/>
+        <result column="name" property="username"/>
+        <result column="password" property="pwd"/>
+        <result column="bank_card" property="bank_card"/>
+<!--        1对1-->
+       <!-- <association property="order" javaType="Order">
+            <result column="id" property="id"/>
+            <result column="prodname" property="prodname"/>
+            <result column="uid" property="uid"/>
+        </association>-->
+
+<!--      一对多  -->
+        <collection property="order" ofType="Order">
+            <result column="id" property="id"/>
+            <result column="prodname" property="prodname"/>
+            <result column="uid" property="uid"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectById" resultMap="userMap" resultType="User">
+        select *
+        from tb_user u join tb_order o on u.id = o.uid
+        where u.id = #{id}
+    </select>
+
+    <select id="selectByUser" resultMap="userMap" resultType="User">
+        select *
+        from tb_user
+        where id = #{id}
+          and name = #{username}
+    </select>
+
+    <update id="updateUser" parameterType="User">
+        update tb_user
+        set name     = #{username},
+            password=#{pwd},
+            bank_card=#{bank_card}
+        where id = #{id}
+    </update>
+</mapper>
