@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <script th:src="@{/static/js/jquery-3.6.0.js}">
+    </script>
+</head>
+<body>
+<div style="text-align: center">
+    <a th:href="@{/hello}">hello</a><br>
+    <a href="/springmvc/hello2">hello2</a><br><br>
+    <a th:href="@{/html/upload.html}">文件上传</a><br><br>
+
+    <form method="post" th:action="@{/login}">
+        用户名:<input type="text" name="username"/><br>
+        密码:<input type="password" name="pwd"/><br>
+        <input type="submit" value="login"/>
+    </form>
+    <br><br>
+    <form th:action="@{/loginTwo}" id="loginForm">
+        用户名:<input type="text" name="username" id="username"/><br>
+        密码:<input type="password" name="pwd" id="pwd"/><br>
+        生日:<input type="date" name="birth" id="birth"><br>
+        <input type="button" value="ajax提交" id="sub"/>
+    </form>
+    <br><br>
+    <!--    map接收-->
+    <form th:action="@{/loginMap}" method="post">
+        用户名:<input type="text" name="username"/>
+        <br>
+        密码:<input type="password" name="pwd"/><br>
+        生日:<input type="date" name="birth"><br>
+        <input type="submit" value="map接收参数"/>
+    </form>
+    <br><br>
+    <!--    集合接收-->
+    <form th:action="@{/loginList}" method="post">
+        <table>
+            <tr>
+                <td>用户名:<input type="text" name="username"/></td>
+            </tr>
+            <tr>
+                <td>用户名:<input type="text" name="username"/></td>
+            </tr>
+            <tr>
+                <td>用户名:<input type="text" name="username"/></td>
+            </tr>
+        </table>
+        <input type="submit" value="集合接收参数"/>
+    </form>
+    <!--    数组接收-->
+    <form th:action="@{/loginArray}" method="post">
+        <table>
+            <tr>
+                <td><input type="checkbox" name="ids" value="1"></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="ids" value="2"></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" name="ids" value="3"></td>
+            </tr>
+        </table>
+        <input type="submit" value="数组接收参数"/>
+    </form>
+</div>
+<script>
+    $("#sub").click(function () {
+        let username = $("#username").val()
+        let pwd = $("#pwd").val()
+        let birth = $("#birth").val()
+        let data = $("#loginForm").serialize()
+        /*$.post('/springmvc/loginTwo',data,function (result) {
+            console.log(result)
+        })*/
+        /*$.getJSON('/springmvc/loginTwo',data,function (result) {
+            console.log(result)
+        })*/
+        $.ajax({
+            url: '/springmvc/loginTwo',
+            method: 'post',
+            //使用json字符串向后台传递参数
+            contentType: "application/json",
+            //不可以写成
+            //let data = $("#loginForm").serialize()
+            // JSON.stringify(data),
+            // 因为这里的data格式为username=rose&pwd=123,浏览器解析时会出现错误
+            data: JSON.stringify({"username": username, "pwd": pwd, "birth": birth}),
+            // data:data,
+            success: function (result) {
+                console.log(result)
+                // window.location.href="/springmvc/static/html/success.html"
+            }
+        })
+    })
+
+</script>
+</body>
+</html>
