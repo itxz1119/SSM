@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--    Student  set注入-->
+    <!--<bean id="myStudent" class="com.bjpowernode.entity.Student" autowire="byName">
+        <property name="name" value="roseeee"/>
+        <property name="age" value="18"/>
+    </bean>-->
+
+    <!--    引用类型 按照byName-->
+    <!--<bean id="school" class="com.bjpowernode.entity.School">
+        <property name="name" value="清华大学"/>
+        <property name="address" value="北京"/>
+    </bean>-->
+
+    <!--    Student  set注入-->
+    <bean id="myStudent" class="com.bjpowernode.entity.Student" autowire="byType">
+        <property name="name" value="Tina"/>
+        <property name="age" value="26"/>
+    </bean>
+    <!--    引用类型 按照byType-->
+    <bean id="mySchool" class="com.bjpowernode.entity.School">
+        <property name="name" value="河南大学"/>
+        <property name="address" value="河南"/>
+    </bean>
+</beans>

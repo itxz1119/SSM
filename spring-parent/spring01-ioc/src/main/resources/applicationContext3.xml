@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="student" class="com.bjpowernode.entity.Student3">
+        <property name="name" value="rose"/>
+        <property name="age" value="20"/>
+        <property name="list">
+            <list>
+                <value>rose</value>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </list>
+        </property>
+        <property name="array">
+            <array>
+                <value>1</value>
+                <value>2</value>
+                <value>3</value>
+            </array>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="one" value="100"/>
+                <entry key="two" value="100"/>
+                <entry key="three" value="100"/>
+            </map>
+        </property>
+        <property name="prop">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">123456</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

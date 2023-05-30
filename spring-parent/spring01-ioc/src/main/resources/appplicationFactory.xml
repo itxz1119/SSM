@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!--静态方法 可以直接调用,不需要对象的创建-->
+    <bean id="mark" class="com.bjpowernode.factory.StudentFactory" factory-method="getInstance"/>
+
+<!--    非静态方法,需要创建对象-->
+    <bean id="studentFactory" class="com.bjpowernode.factory.StudentFactory"/>
+    <bean id="jane" class="com.bjpowernode.factory.StudentFactory" factory-bean="studentFactory" factory-method="getInstance2"/>
+
+<!--    implements FactoryBean<Student>接口-->
+    <bean id="student" class="com.bjpowernode.factory.StudentFactory2"/>
+</beans>

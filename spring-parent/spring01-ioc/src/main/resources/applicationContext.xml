@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+    id:自定义,唯一;
+    class:接口的实现类全限定类名
+    -->
+
+<!--   SomeServiceImpl -->
+    <bean id="someService" class="com.bjpowernode.service.impl.SomeServiceImpl"/>
+
+<!--    Student  set注入-->
+    <bean id="myStudent" class="com.bjpowernode.entity.Student" >
+        <property name="name" value="rose"/>
+        <property name="age" value="18"/>
+        <property name="birthday" value="2000/11/19"/>
+<!--        手动注入-->
+        <property name="school" ref="mySchool"/>
+    </bean>
+<!--    引用类型-->
+    <bean id="mySchool" class="com.bjpowernode.entity.School">
+        <property name="name" value="北京大学"/>
+        <property name="address" value="北京"/>
+    </bean>
+<!--    User 构造注入-->
+    <bean id="myUser" class="com.bjpowernode.entity.User" autowire="byName">
+        <constructor-arg name="username" value="Tina"/>
+        <constructor-arg name="password" value="123456"/>
+    </bean>
+    <bean id="order" class="com.bjpowernode.entity.Order">
+        <property name="prodName" value="手机"/>
+        <property name="money" value="9999"/>
+    </bean>
+</beans>
